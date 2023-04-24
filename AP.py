@@ -4,8 +4,10 @@ import pandas as pd
 import streamlit as st
 import calendar
 from datetime import datetime
+import matplotlib.pyplot as plt
 import numpy as np
-import random 
+from streamlit_lottie import st_lottie
+import time
 
 
 #Hauptseite
