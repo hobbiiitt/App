@@ -1,2 +1,3 @@
-# App
-No description yet
+# TodoApp
+Eine ToDo App, welche bei der Produktivität behilflich sein sollte.
+
