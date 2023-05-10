@@ -6,13 +6,11 @@ import calendar
 from datetime import datetime
 import matplotlib.pyplot as plt
 import numpy as np
-from streamlit_lottie import st_lottie
-import time
-import matplotlib
-matplotlib.use('Agg')
+import yaml
+from yaml.loader import SafeLoader
+import streamlit_authenticator as stauth
+from jsonbin import load_key, save_key
 
-
-#Hauptseite
 
 #Hauptseite
 
@@ -50,6 +48,7 @@ def main():
             st.session_state.todolist_samstag = []
         if not 'todolist_sonntag' in st.session_state:
             st.session_state.todolist_sonntag = []
+    
     
         if st.button("add"):
             if Wochentag == "Montag":
@@ -128,12 +127,14 @@ def main():
             st.session_state.todolist_freitag = []
             st.session_state.todolist_samstag = []
             st.session_state.todolist_sonntag = []
+        
             
         st.checkbox('Json hinzufügen')
         st.checkbox('Gameification -> Animation')
         st.checkbox('Delet Button ausbessern')
         st.checkbox('Design allgemein')
         st.checkbox('Gnaueri und evt meh statistike')
+        st.checkbox('Login')
             
      
         
@@ -230,40 +231,52 @@ def main():
                 
             
     elif choice == "Test":
-            st.subheader("Testing")
-            
-            
-            import random 
-  
-            class flashcard: 
-                def __init__(self): 
+        st.subheader("Testing")
         
-                    self.fruits={'apple':'red', 
-                     'orange':'orange', 
-                     'watermelon':'green', 
-                     'banana':'yellow'} 
-          
-                def quiz(self): 
-                    while (True): 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
             
-                        fruit, color = random.choice(list(self.fruits.items())) 
-                        print("What is the color of {}".format(fruit)) 
-                        user_answer = input()    
-                        if(user_answer.lower() == color): 
-                            print("Correct answer") 
-                        else: 
-                            print("Wrong answer") 
-                  
-                        option = int(input("enter 0 , if you want to play again : ")) 
-                        if (option): 
-                            break
-  
-                    print("welcome to fruit quiz ") 
-                    fc=flashcard() 
-                    fc.quiz()
+        # -------- load secrets for jsonbin.io --------
+        jsonbin_secrets = st.secrets["jsonbin"]
+        api_key = jsonbin_secrets["api_key"]
+        bin_id = jsonbin_secrets["bin_id"]
 
-            
-            
-                     
+
+
+        # -------- user login --------
+        with open('config.yaml') as file:
+            config = yaml.load(file, Loader=SafeLoader)
+            authenticator = stauth.Authenticate(
+            config['credentials'],
+            config['cookie']['name'],
+            config['cookie']['key'],
+            config['cookie']['expiry_days'],
+            )
+
+            fullname, authentication_status, username = authenticator.login('Login', 'main')
+
+            if authentication_status == True:   # login successful
+                authenticator.logout('Logout', 'main')   # show logout button
+            elif authentication_status == False:
+                st.error('Username/password is incorrect')
+                st.stop()
+            elif authentication_status == None:
+                st.warning('Please enter your username and password')
+                st.stop()
+                
+            address_list = load_key(api_key, bin_id, username)
+        
+
 if __name__ == '__main__':
 	main()
