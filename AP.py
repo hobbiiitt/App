@@ -12,6 +12,38 @@ import streamlit_authenticator as stauth
 from jsonbin import load_key, save_key
 
 
+#Login
+  
+# -------- load secrets for jsonbin.io --------
+jsonbin_secrets = st.secrets["jsonbin"]
+api_key = jsonbin_secrets["api_key"]
+bin_id = jsonbin_secrets["bin_id"]
+
+
+
+# -------- user login --------
+with open('config.yaml') as file:
+    config = yaml.load(file, Loader=SafeLoader)
+
+authenticator = stauth.Authenticate(
+    config['credentials'],
+    config['cookie']['name'],
+    config['cookie']['key'],
+    config['cookie']['expiry_days'],
+)
+
+fullname, authentication_status, username = authenticator.login('Login', 'main')
+
+if authentication_status == True:   # login successful
+    authenticator.logout('Logout', 'main')   # show logout button
+elif authentication_status == False:
+    st.error('Username/password is incorrect')
+    st.stop()
+elif authentication_status == None:
+    st.warning('Please enter your username and password')
+    st.stop()
+    
+
 #Hauptseite
 
 def main():
@@ -20,16 +52,16 @@ def main():
     
     st.markdown("<h2 style='text-align: center; font-size: 15px;'>Heute: " + datetime.today().strftime('%Y-%m-%d') + "</h2>", unsafe_allow_html=True)
     
-    menu = ["Main", "Statistiken", "Test"]
+    menu = ["Hauptseite", "Statistiken", "Testing"]
     choice = st.selectbox("Menu", menu)
     
-    if choice == "Main":
+    if choice == "Hauptseite":
 
         col1,col2 = st.columns(2)
         
         #Für das schreiben der Aufgabe
         with col1:
-            task = st.text_area("Aufgabe")
+            task = st.text_area("Aufgaben")
 
         with col2:
             Wochentag = st.selectbox("Wochentag",["Montag", "Dienstag", "Mittwoch", "Donnerstag","Freitag", "Samstag", "Sonntag"])
@@ -49,8 +81,7 @@ def main():
         if not 'todolist_sonntag' in st.session_state:
             st.session_state.todolist_sonntag = []
     
-    
-        if st.button("add"):
+        if st.button("Hinzufügen"):
             if Wochentag == "Montag":
                 st.session_state.todolist_montag.append(task)
             elif Wochentag == "Dienstag":
@@ -78,7 +109,7 @@ def main():
             if Wochentag == "Montag":
                 cm = st.container()
                 for i, task in enumerate(st.session_state.todolist_montag):
-                    cm.checkbox(label=f'{task}', key=i)
+                    cm.checkbox(label=f'{task}', value=False, key=i)
         
         with tab2:
             cdi = st.container()
@@ -111,8 +142,25 @@ def main():
             if Wochentag == "Sonntag":
                 for i, task in enumerate(st.session_state.todolist_sonntag):
                     cso.checkbox(label=f'{task}', key=i)
+                    
+
         
+        session_state_data = {
+            "todolist_montag": st.session_state.todolist_montag,
+            "todolist_dienstag": st.session_state.todolist_dienstag,
+            "todolist_mittwoch": st.session_state.todolist_mittwoch,
+            "todolist_donnerstag": st.session_state.todolist_donnerstag,
+            "todolist_freitag": st.session_state.todolist_freitag,
+            "todolist_samstag": st.session_state.todolist_samstag,
+            "todolist_sonntag": st.session_state.todolist_sonntag
+            }
         
+        json_data = json.dumps(session_state_data, indent=4)
+
+
+        with open('session_state.json', 'w') as file:
+            file.write(json_data)
+
         
         
         #my_list = st.session_state.todolist
@@ -127,14 +175,9 @@ def main():
             st.session_state.todolist_freitag = []
             st.session_state.todolist_samstag = []
             st.session_state.todolist_sonntag = []
-        
             
-        st.checkbox('Json hinzufügen')
-        st.checkbox('Gameification -> Animation')
-        st.checkbox('Delet Button ausbessern')
-        st.checkbox('Design allgemein')
-        st.checkbox('Gnaueri und evt meh statistike')
-        st.checkbox('Login')
+        
+        
             
      
         
@@ -160,13 +203,13 @@ def main():
         A,B = st.columns(2)
         
         def my_widget(label, default_value):
-            return st.sidebar.slider(label, 0, 100, default_value)
+            return st.sidebar.slider(label, 0, 24, default_value)
         
         with A:
-            Pause = st.number_input('Pause', value = 1.0)
+            Pause = st.number_input('Pause in h', value = 1.0)
             
         with B:
-            Arbeit = st.number_input('Arbeit', value = 1.0)
+            Arbeit = st.number_input('Arbeit in h', value = 1.0)
 
         st.empty()
         st.empty()
@@ -229,54 +272,12 @@ def main():
                 st.info(info_text)
                 st.markdown("---")
                 
+
+        
+    
             
-    elif choice == "Test":
-        st.subheader("Testing")
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
             
-        # -------- load secrets for jsonbin.io --------
-        jsonbin_secrets = st.secrets["jsonbin"]
-        api_key = jsonbin_secrets["api_key"]
-        bin_id = jsonbin_secrets["bin_id"]
+main()   
 
-
-
-        # -------- user login --------
-        with open('config.yaml') as file:
-            config = yaml.load(file, Loader=SafeLoader)
-            authenticator = stauth.Authenticate(
-            config['credentials'],
-            config['cookie']['name'],
-            config['cookie']['key'],
-            config['cookie']['expiry_days'],
-            )
-
-            fullname, authentication_status, username = authenticator.login('Login', 'main')
-
-            if authentication_status == True:   # login successful
-                authenticator.logout('Logout', 'main')   # show logout button
-            elif authentication_status == False:
-                st.error('Username/password is incorrect')
-                st.stop()
-            elif authentication_status == None:
-                st.warning('Please enter your username and password')
-                st.stop()
-                
-            address_list = load_key(api_key, bin_id, username)
-        
-
-if __name__ == '__main__':
-	main()
+#if __name__ == '__main__':
+#	main()
