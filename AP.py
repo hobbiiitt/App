@@ -5,7 +5,6 @@ import yaml
 from yaml.loader import SafeLoader
 import streamlit_authenticator as stauth
 from jsonbin import load_key, save_key
-import streamlit_lottie
 
 
   
