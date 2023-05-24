@@ -1,4 +1,2 @@
 matplotlib
-streamlit_lottie
-yaml
 streamlit_authenticator
