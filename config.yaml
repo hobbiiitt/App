@@ -1,0 +1,15 @@
+credentials:
+  usernames:
+    Tamara Aneni:
+      email: 
+      name: Tamara Aneni
+      password: $2b$10$McrmpppdepQVSNwFk.qT0eVKQoLI8lzesjjhPSIzTK329bhcw6Eh6 # To be replaced with hashed password
+    guest:
+      name: Gast
+      password: $2b$10$McrmpppdepQVSNwFk.qT0eVKQoLI8lzesjjhPSIzTK329bhcw6Eh6 # To be replaced with hashed password
+cookie:
+  expiry_days: 30  # number of days until password is asked again
+  key: JgDyEoKUNItM5prxo194jDeLYzVzmYE6 # Must be string, use https://randomkeygen.com/
+  name: streamlitcookie
+  
+  #$2b$12$PgpthE2cyZGbaaRKoMiNrOgxLmDaUkgSwV/02hss7qA2mvfg15zvy
