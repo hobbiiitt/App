@@ -48,7 +48,7 @@ Titel = st.title("To Do List")
 
 st.markdown("<h2 style='text-align: center; font-size: 15px;'>Heute: " + datetime.today().strftime('%Y-%m-%d') + "</h2>", unsafe_allow_html=True)
 
-menu = ["Hauptseite", "Statistiken", "Testing"]
+menu = ["Hauptseite", "Statistiken"]
 choice = st.selectbox("Menu", menu)
 
 if choice == "Hauptseite":
