@@ -21,6 +21,7 @@ def save_data(api_key, bin_id, data):
     res = requests.put(url, headers=headers, json=data).json()
     return res
 
+
 def load_key(api_key, bin_id, key, empty_value=[]):
     """
     Load key from bin
@@ -49,4 +50,3 @@ def save_key(api_key, bin_id, key, data):
         res[key] = data
     res = requests.put(url, headers=headers, json=res).json()
     return res
-
