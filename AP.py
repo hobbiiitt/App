@@ -158,11 +158,6 @@ if choice == "Hauptseite":
     data = {"a": session_state_data}
 
     save_key(api_key, bin_id, username, data)
-
-    lottie_file_path = "https://assets8.lottiefiles.com/packages/lf20_pPYkESohrg.json"
-    st_lottie_animation = streamlit_lottie.st_lottie(url=lottie_file_path, height=300)
-    st.markdown("## Lottie Animation")
-    st_lottie_animation
     
     #my_list = st.session_state.todolist
     
