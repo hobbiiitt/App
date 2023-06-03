@@ -3,13 +3,13 @@ credentials:
     Tamara Aneni:
       email: 
       name: Tamara Aneni
-      password:$2b$10$3xkjyh/nvOttbMPrZBwAueRRX27pnEoTY.yZ5ZCSIq7otJh2JJ2mu # To be replaced with hashed password
+      password: $2b$10$sxuZLh3djatxyP0uEoye0OCjZ1mbv88QcedJu/XcIyzKiO5F5mKam  # To be replaced with hashed password
     guest:
       name: Gast
-      password:$2b$10$3xkjyh/nvOttbMPrZBwAueRRX27pnEoTY.yZ5ZCSIq7otJh2JJ2mu # To be replaced with hashed password
+      password: $2b$10$sxuZLh3djatxyP0uEoye0OCjZ1mbv88QcedJu/XcIyzKiO5F5mKam  # To be replaced with hashed password
 cookie:
   expiry_days: 3000  # number of days until password is asked again
-  key: 645f5fe0b89b1e22999cced3 # Must be string, use https://randomkeygen.com/
+  key: 645f5fe0b89b1e22999cced3  # Must be string, use https://randomkeygen.com/
   name: streamlitcookie
-  
-  #$2b$12$PgpthE2cyZGbaaRKoMiNrOgxLmDaUkgSwV/02hss7qA2mvfg15zvy
+
+ 
